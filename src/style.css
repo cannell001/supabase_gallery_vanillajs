@@ -1,0 +1,222 @@
+/* src/style.css */
+/* --- Theme & Base --- */
+:root{
+  --bg-dark:#111827;
+  --panel-bg:#1f2937;
+  --border:#374151;
+  --text:#d1d5db;
+  --muted:#9ca3af;
+  --primary:#3b82f6;
+  --primary-2:#60a5fa;
+  --accent:#10b981;
+  --accent-2:#34d399;
+  --shadow-sm:0 1px 2px rgb(0 0 0 / .15);
+  --shadow-md:0 4px 6px -1px rgb(0 0 0 / .2),0 2px 4px -2px rgb(0 0 0 / .2);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+body{
+  font-family:'Inter',sans-serif;
+  background:var(--bg-dark);
+  color:var(--text);
+  line-height:1.6;
+}
+
+/* ---------------- Layout ---------------- */
+.main-layout{
+  display:flex;
+  flex-wrap:wrap;               /* allow right panel to drop under when too narrow */
+  gap:2rem;
+  padding:2rem;
+  height:100vh;
+}
+
+.left-panel{
+  flex:0 0 400px;               /* fixed width, never changes */
+  display:flex;
+  flex-direction:column;
+  gap:1.5rem;
+}
+
+.right-panel{
+  flex:1 1 400px;               /* can shrink, but not below left-panel width */
+  min-width:400px;
+  background:var(--panel-bg);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:1.5rem;
+  box-shadow:var(--shadow-md);
+  display:flex;
+  flex-direction:column;
+  overflow:auto;                 /* enable scroll if gallery is wider (no overlap) */
+}
+
+/* ---------------- Headings ---------------- */
+header h1{font-size:2.25rem;color:#fff}
+header p{color:var(--muted)}
+h2{
+  color:#fff;
+  margin-bottom:.75rem;
+  padding-bottom:.5rem;
+  border-bottom:1px solid var(--border);
+  font-size:1.25rem
+}
+
+/* ---------------- Cards ---------------- */
+.control-box{
+  background:var(--panel-bg);
+  border:1px solid var(--border);
+  border-radius:12px;
+  padding:1.25rem;
+  box-shadow:var(--shadow-sm);
+}
+
+/* ---------------- Inputs & Buttons ---------------- */
+input[type="text"],select{
+  width:100%;
+  padding:.75rem;
+  font-size:1rem;
+  color:var(--text);
+  background:var(--bg-dark);
+  border:1px solid var(--border);
+  border-radius:8px;
+}
+input[type="text"]:focus,select:focus{
+  outline:none;
+  border-color:var(--primary);
+  box-shadow:0 0 0 3px rgba(59,130,246,.3)
+}
+button{
+  width:100%;
+  padding:.75rem;
+  font-weight:600;
+  color:#fff;
+  border:0;
+  border-radius:8px;
+  cursor:pointer;
+  transition:transform .1s, background-color .2s;
+}
+button:hover{transform:translateY(-1px)}
+button:active{transform:translateY(0)}
+#createBucketBtn,#loadGalleryBtn{background:var(--primary)}
+#createBucketBtn:hover,#loadGalleryBtn:hover{background:var(--primary-2)}
+#selectFileBtn{background:var(--accent); width:auto; padding:.5rem 1rem}
+#selectFileBtn:hover{background:var(--accent-2)}
+.mt{margin-top:1rem}
+.input-group{display:flex; gap:.75rem; align-items:center}
+.input-group select{flex-grow:1}
+
+.status-message{
+  min-height:1.2em;
+  margin-top:.75rem;
+  text-align:center;
+  font-size:.9rem
+}
+
+/* ---------------- Drop Zone ---------------- */
+.drop-zone{
+  border:2px dashed var(--border);
+  border-radius:10px;
+  padding:1.25rem;
+  text-align:center;
+  cursor:pointer;
+  margin-top:1rem;
+  transition:background-color .2s, border-color .2s, box-shadow .2s;
+}
+.drop-zone p{color:var(--muted)}
+.drop-zone span{display:block; margin:.5rem 0; color:var(--muted); font-size:.9rem}
+.drop-zone.drag-over{
+  background-color:rgba(59,130,246,.1);
+  border-color:var(--primary);
+  box-shadow:0 0 15px rgba(59,130,246,.3)
+}
+
+/* ---------------- Bucket link (yellow) ---------------- */
+.bucket-link { text-align:center; margin-top:.5rem; }
+.bucket-link a {
+  color:#fde047; /* yellow-300 */
+  text-decoration:underline;
+}
+.bucket-link a:hover { filter:brightness(1.1); }
+
+/* ---------------- Gallery (constant equal gap, responsive thumbs, no overlap) ---------------- */
+/* Uses flexbox to maintain pixel-perfect, constant gaps at all widths */
+.gallery-container{
+  --gap: 16px;         /* CONSTANT spacing between thumbnails */
+  --thumb-min: 160px;  /* min thumbnail width */
+  --thumb-max: 260px;  /* max thumbnail width */
+
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:center;       /* center rows */
+  gap:var(--gap);               /* constant equal gap */
+  padding:1rem;
+  margin:0 auto;
+  max-width:1200px;             /* optional: limit row width */
+  box-sizing:border-box;
+}
+
+/* Each item auto-fits rows with constant gaps; never overlaps */
+.gallery-item{
+  flex: 1 1 calc(25% - var(--gap)); /* target ~4 per row on wide screens */
+  min-width: var(--thumb-min);      /* will wrap before going smaller */
+  max-width: var(--thumb-max);      /* stop growing at a reasonable size */
+  aspect-ratio: 4 / 3;
+  border-radius:10px;
+  overflow:hidden;
+  background:var(--bg-dark);
+  border:1px solid transparent;
+  cursor:pointer;
+  transition: box-shadow .2s, border-color .2s, translate .15s; /* no scale */
+}
+
+.gallery-item:hover{
+  translate: 0 -4px;            /* subtle lift only */
+  border-color: var(--primary);
+  box-shadow: 0 8px 24px rgb(0 0 0 / .5);
+}
+
+.gallery-item img{
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  display:block;
+}
+
+.gallery-placeholder{
+  flex-basis:100%;
+  text-align:center;
+  color:var(--muted);
+  margin:2rem 0;
+}
+
+/* ---------------- Scrollbar ---------------- */
+.gallery-container::-webkit-scrollbar{width:8px; height:8px;}
+.gallery-container::-webkit-scrollbar-track{background:var(--panel-bg)}
+.gallery-container::-webkit-scrollbar-thumb{
+  background:var(--border);
+  border-radius:10px;
+  border:2px solid var(--panel-bg)
+}
+.gallery-container::-webkit-scrollbar-thumb:hover{background:var(--primary)}
+
+/* ---------------- Lightbox ---------------- */
+.lightbox{
+  position:fixed;
+  inset:0;
+  z-index:1000;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  background:rgba(0,0,0,.9);
+  backdrop-filter:blur(5px);
+}
+.lightbox-content{max-width:85vw; max-height:80vh; border-radius:8px}
+#lightboxCaption{margin-top:1rem; font-size:1rem}
+.close-btn{position:absolute; top:20px; right:40px; font-size:40px; color:#fff; cursor:pointer}
+.close-btn:hover{color:var(--primary)}
+
+/* ---------------- Responsive tweaks ---------------- */
+@media (max-width:1024px){
+  .main-layout{height:auto;}
+}

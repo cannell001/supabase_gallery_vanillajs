@@ -1,0 +1,78 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Cloud Storage Manager</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="src/style.css">
+</head>
+<body>
+  <div class="main-layout">
+    <!-- LEFT PANEL -->
+    <div class="left-panel">
+      <header>
+        <h1>Cloud Storage Manager 🌩️</h1>
+        <p>Create buckets, upload images, and manage your gallery with ease.</p>
+      </header>
+
+      <!-- Step 1: Create Bucket -->
+      <section class="control-box">
+        <h2>1. Create New Bucket</h2>
+        <input id="bucketNameInput" type="text" placeholder="e.g., travel-photos" />
+        <button id="createBucketBtn">Create Bucket</button>
+        <p id="createBucketStatus" class="status-message"></p>
+      </section>
+
+      <!-- Step 2: Select & Upload -->
+      <section class="control-box">
+        <h2>2. Select Bucket & Upload</h2>
+        <div class="input-group">
+          <select id="bucketSelect">
+            <option value="">-- Select a Bucket --</option>
+          </select>
+        </div>
+
+        <div id="dropZone" class="drop-zone" tabindex="0">
+          <p>Drag & Drop Images Here</p>
+          <span>or</span>
+          <input id="filePicker" type="file" multiple accept="image/*" hidden />
+          <button id="selectFileBtn" type="button">Choose Files</button>
+        </div>
+
+        <!-- Explicit load button BELOW the drop zone (no auto-loading) -->
+        <button id="loadGalleryBtn" class="mt">Load Gallery</button>
+
+        <p id="uploadStatus" class="status-message"></p>
+        <!-- Yellow bucket link appears here AFTER gallery loads -->
+        <p id="bucketLink" class="bucket-link"></p>
+      </section>
+    </div>
+
+    <!-- RIGHT PANEL -->
+    <div class="right-panel">
+      <h2>Image Gallery</h2>
+      <div id="fileList" class="gallery-container">
+        <div class="gallery-placeholder">
+          <p>Your images will appear here.</p>
+          <span>Select a bucket and click <strong>Load Gallery</strong> to begin.</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Lightbox Overlay (hidden by default) -->
+  <div id="lightbox" class="lightbox" style="display:none;">
+    <span id="lightboxClose" class="close-btn" aria-label="Close">&times;</span>
+    <img class="lightbox-content" id="lightboxImage" alt="Preview"/>
+    <div id="lightboxCaption"></div>
+  </div>
+
+  <script type="module" src="src/main.js"></script>
+</body>
+</html>
